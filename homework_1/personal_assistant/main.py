@@ -1,7 +1,7 @@
 from colorama import init, Fore
 
 from .services.db import create_all_tables
-from .services.utils.input_parser import text_parsing
+from .services.utils import text_parsing
 
 init(autoreset=True)
 

@@ -1,6 +1,7 @@
 import json
 from typing import Optional
 from datetime import date
+from abc import ABC, abstractmethod
 
 from sqlalchemy import (
     delete,
@@ -19,7 +20,52 @@ from .address import Address
 from .email import Email
 
 
-class Record(DBSession):
+class RecordABC(ABC):
+    @abstractmethod
+    def __save(self) -> None:
+        pass
+
+    @abstractmethod
+    def remove_record(self) -> None:
+        pass
+
+    @abstractmethod
+    def add_phone(self, phone: str) -> Phone:
+        pass
+
+    @abstractmethod
+    def replace_phone(self, index: int, phone: str) -> Phone:
+        pass
+
+    @abstractmethod
+    def remove_phone(self, index: int) -> Phone:
+        pass
+
+    @abstractmethod
+    def change_birthday(self, value: str) -> Birthday:
+        pass
+
+    @abstractmethod
+    def days_to_birthday(self) -> Optional[int]:
+        pass
+
+    @abstractmethod
+    def change_email(self, value: str) -> Email:
+        pass
+
+    @abstractmethod
+    def change_address(self, value: str) -> Address:
+        pass
+
+    def format_record(self) -> str:
+        pass
+
+    @abstractmethod
+    def __update_contact_db(self, request: str):
+        pass
+
+
+class Record(RecordABC, DBSession):
     def __init__(self,
                  name: str,
                  phone: Optional[str] = None,
@@ -35,9 +81,9 @@ class Record(DBSession):
         self.contact_id = contact_id
 
         if not self.contact_id:
-            self.__save_record()
+            self.__save()
 
-    def __save_record(self) -> None:
+    def __save(self) -> None:
         str_phones = json.dumps([x.value for x in self.phones])
 
         with self.db_session() as session:
@@ -74,7 +120,7 @@ class Record(DBSession):
         phone = Phone(phone)
 
         if any((phone.value == x.value) for x in self.phones):
-            raise ValueError(f"Number '{phone.value}' was already added earlier")
+            raise ValueError(f"Number «{phone.value}» was already added earlier")
 
         self.phones.append(phone)
 

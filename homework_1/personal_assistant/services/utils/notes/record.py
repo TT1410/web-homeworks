@@ -1,5 +1,6 @@
 import json
 from typing import Optional
+from abc import ABC, abstractmethod
 
 from sqlalchemy import (
     delete,
@@ -15,7 +16,29 @@ from .text import Text
 from .tag import Tag
 
 
-class Record(DBSession):
+class RecordABC(ABC):
+    @abstractmethod
+    def __save(self) -> None:
+        pass
+
+    @abstractmethod
+    def replace_text(self, new_text: str) -> None:
+        pass
+
+    @abstractmethod
+    def add_tags(self, new_tags: list[str]) -> None:
+        pass
+
+    @abstractmethod
+    def remove_record(self) -> None:
+        pass
+
+    @abstractmethod
+    def format_record(self) -> str:
+        pass
+
+
+class Record(RecordABC, DBSession):
     def __init__(self,
                  text: str,
                  tags: Optional[list[str]] = None,
@@ -25,9 +48,9 @@ class Record(DBSession):
         self.note_id: Optional[int] = note_id
 
         if not self.note_id:
-            self.__save_record()
+            self.__save()
 
-    def __save_record(self) -> None:
+    def __save(self) -> None:
         str_tags = json.dumps([x.value for x in self.tags])
 
         with self.db_session() as session:
