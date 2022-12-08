@@ -1,5 +1,6 @@
 import json
 from typing import Generator
+from abc import ABC, abstractmethod
 
 from sqlalchemy import (
     select,
@@ -12,7 +13,30 @@ from personal_assistant.services.db import (
 from .record import Record
 
 
-class Notes(DBSession):
+class NotesABC(ABC):
+    @abstractmethod
+    def search_notes_by_text(self, contains_text: str) -> list[Record]:
+        pass
+
+    @abstractmethod
+    def search_notes_by_tags(self, tags: list[str]) -> list[Record]:
+        pass
+
+    @abstractmethod
+    def get_all_records(self) -> 'Generator[Record]':
+        pass
+
+    @abstractmethod
+    def search_notes_by_id(self, note_id: int) -> Record:
+        pass
+
+    @classmethod
+    @abstractmethod
+    def __record_from_models_to_class(cls, record: models.ModelNotes) -> Record:
+        pass
+
+
+class Notes(NotesABC, DBSession):
     def search_notes_by_text(self, contains_text: str) -> list[Record]:
         with self.db_session() as session:
             records = session.execute(

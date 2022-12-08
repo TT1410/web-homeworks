@@ -61,7 +61,7 @@ class RecordABC(ABC):
         pass
 
     @abstractmethod
-    def __update_contact_db(self, request: str):
+    def __update_contact_db(self, request: str) -> None:
         pass
 
 
@@ -78,7 +78,7 @@ class Record(RecordABC, DBSession):
         self.birthday: Birthday = Birthday(birthday) if birthday else None
         self.address: Address = Address(address) if address else ''
         self.email: Email = Email(email) if email else ''
-        self.contact_id = contact_id
+        self.contact_id: Optional[int] = contact_id
 
         if not self.contact_id:
             self.__save()
@@ -211,7 +211,7 @@ class Record(RecordABC, DBSession):
 
         return f": {self.name.value:^15} : {email:^15} : {str(birthday):^10} : {phones:^30} : {address:^30} :\n"
 
-    def __update_contact_db(self, request: str):
+    def __update_contact_db(self, request: str) -> None:
         with self.db_session() as session:
             session.execute(request)
             session.commit()
