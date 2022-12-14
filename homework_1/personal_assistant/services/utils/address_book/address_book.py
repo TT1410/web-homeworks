@@ -1,5 +1,6 @@
 from typing import Optional, Generator
 import json
+from abc import ABC, abstractmethod
 
 from sqlalchemy import (
     select,
@@ -13,7 +14,34 @@ from .record import Record
 from .phone import Phone
 
 
-class AddressBook(DBSession):
+class AddressBookABC(ABC):
+    @abstractmethod
+    def get_contact(self, name: str) -> Record | None:
+        pass
+
+    @abstractmethod
+    def search_contacts(self, value: str) -> list[Record] | None:
+        pass
+
+    @abstractmethod
+    def iterator(self, count: Optional[int] = None) -> 'Generator[list[Record]]':
+        pass
+
+    @abstractmethod
+    def get_all_contacts(self) -> 'Generator[Record]':
+        pass
+
+    @abstractmethod
+    def __getitem__(self, item: str) -> Record:
+        pass
+
+    @classmethod
+    @abstractmethod
+    def __record_from_models_to_class(cls, record: models.ModelContacts) -> Optional[Record]:
+        pass
+
+
+class AddressBook(AddressBookABC, DBSession):
 
     def get_contact(self, name: str) -> Record | None:
         with self.db_session() as session:

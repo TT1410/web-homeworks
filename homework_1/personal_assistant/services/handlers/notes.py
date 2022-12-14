@@ -42,8 +42,8 @@ def search_notes_by_text(text: str) -> str:
     return format_results
 
 
-@route('search-tags')
 @input_error
+@route('search-tags')
 def search_notes_by_tags(tags: str) -> str:
     """
     By this command, the bot searches the memory for a note by tags.
@@ -61,9 +61,10 @@ def search_notes_by_tags(tags: str) -> str:
 
     format_results = ""
 
-    for key, value in results.items():
-        note = '\n\tNote: '.join([str(x.text.value) for x in value])
-        format_results += f"{key}\n\tNote: {note}\n"
+    for tag, notes_ in results.items():
+        text_notes = ''.join(['\n\tNote: ' + str(x.text.value) for x in notes_])
+
+        format_results += (tag + text_notes + '\n')
 
     return format_results
 

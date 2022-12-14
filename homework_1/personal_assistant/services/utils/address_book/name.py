@@ -6,10 +6,10 @@ from personal_assistant.services.utils.field import Field
 class Name(Field):
     @Field.value.setter
     def value(self, value):
-        self._value: str = self.check_name(value)
+        self._value: str = self._value_validation(value)
 
     @staticmethod
-    def check_name(value: str) -> str:
+    def _value_validation(value: str) -> str:
         clean_value = (
             value.strip()
             .removeprefix("+")

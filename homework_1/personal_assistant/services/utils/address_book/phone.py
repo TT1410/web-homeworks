@@ -13,10 +13,10 @@ CODES_MOBILE_UA = ['067', '096', '097', '098',
 class Phone(Field):
     @Field.value.setter
     def value(self, value):
-        self._value: int = self.__check_phone_number(value)
+        self._value: int = self._value_validation(value)
 
     @staticmethod
-    def __check_phone_number(phone: str) -> int:
+    def _value_validation(phone: str) -> int:
         clean_phone = (
                         phone.strip()
                         .removeprefix("+")
