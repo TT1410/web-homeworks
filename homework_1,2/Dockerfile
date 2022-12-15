@@ -14,7 +14,7 @@ COPY . $APP_HOME
 # Установим зависимости внутри контейнера
 RUN pip install --upgrade pip
 RUN python -m pip install --upgrade setuptools
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Установим наш персональный помощник, чтобы он запускался командой из консоли
 RUN pip install .
