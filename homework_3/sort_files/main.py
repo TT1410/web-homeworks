@@ -8,7 +8,7 @@ import shutil
 
 from colorama import Fore
 
-from .constants import (
+from constants import (
     DIR_SUFF_DICT,
     TRANS,
     FOUND_FILES,
