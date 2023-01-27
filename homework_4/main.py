@@ -8,12 +8,13 @@ import json
 from datetime import datetime
 
 
-HTTP_IP = '127.0.0.1'
+HTTP_IP = '0.0.0.0'
 HTTP_PORT = 3000
 SOCKET_IP = '127.0.0.1'
 SOCKET_PORT = 5000
-STORAGE_DIR = pathlib.Path().joinpath('storage')
+STORAGE_DIR = pathlib.Path('storage')
 FILE_STORAGE = STORAGE_DIR / 'data.json'
+HTML_PATH = pathlib.Path('starter')
 
 
 class HttpHandler(BaseHTTPRequestHandler):
@@ -22,8 +23,8 @@ class HttpHandler(BaseHTTPRequestHandler):
 
         if pr_url.path == '/':
             self.send_html_file('index.html')
-        elif pr_url.path == '/contact':
-            self.send_html_file('contact.html')
+        elif pr_url.path == '/message':
+            self.send_html_file('message.html')
         else:
             if pathlib.Path().joinpath(pr_url.path[1:]).exists():
                 self.send_static()
@@ -44,7 +45,7 @@ class HttpHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
-        with open(filename, 'rb') as fd:
+        with open(HTML_PATH.joinpath(filename), 'rb') as fd:
             self.wfile.write(fd.read())
 
     def send_static(self) -> None:
@@ -115,6 +116,8 @@ def run_socket_client(ip: str, port: int, data: bytes = None, buf_size: int = 10
 
 
 def main() -> None:
+    STORAGE_DIR.mkdir(exist_ok=True)
+
     HTTPServer = Thread(target=run_http_server, args=(HTTP_IP, HTTP_PORT))
     UDPServer = Thread(target=run_socket_server, args=(SOCKET_IP, SOCKET_PORT))
 
