@@ -1,0 +1,49 @@
+BEGIN TRANSACTION;
+-- Table: students
+DROP TABLE IF EXISTS students;
+CREATE TABLE students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(150) NOT NULL,
+    group_id INTEGER REFERENCES groups(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- Table: groups
+DROP TABLE IF EXISTS groups;
+CREATE TABLE groups (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name STRING NOT NULL UNIQUE
+);
+
+-- Table: teachers
+DROP TABLE IF EXISTS teachers;
+CREATE TABLE teachers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(150) NOT NULL
+);
+
+-- Table: disciplines
+DROP TABLE IF EXISTS disciplines;
+CREATE TABLE disciplines (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(150) NOT NULL,
+    teacher_id INTEGER REFERENCES teachers(id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+-- Table: grades
+DROP TABLE IF EXISTS grades;
+CREATE TABLE grades (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    grade INTEGER NOT NULL,
+    student_id INT REFERENCES students(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    discipline_id INTEGER REFERENCES disciplines(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    created_at DATE NOT NULL DEFAULT CURRENT_DATE
+);
+COMMIT TRANSACTION;
