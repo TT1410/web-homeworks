@@ -15,6 +15,7 @@ class UserDb(BaseModel):
     email: str
     created_at: datetime
     avatar: str
+    confirmed: bool
 
     class Config:
         orm_mode = True
@@ -29,3 +30,12 @@ class TokenModel(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
+
+
+class ChangePassword(BaseModel):
+    old_password: str = Field(min_length=6, max_length=10)
+    new_password: str = Field(min_length=6, max_length=10)
+
+
+class EmailModel(BaseModel):
+    email: EmailStr

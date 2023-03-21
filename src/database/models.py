@@ -1,5 +1,8 @@
+from datetime import datetime
+from typing import Optional
+
 from sqlalchemy import Column, Integer, Date, String, Boolean, func, Table, UniqueConstraint
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, mapped_column, Mapped
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,13 +14,14 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
-    username = Column(String(50), index=True)
-    email = Column(String(250), nullable=False, unique=True, index=True)
-    password = Column(String(255), nullable=False)
-    created_at = Column(DateTime, default=func.now())
-    avatar = Column(String(255), nullable=True)
-    refresh_token = Column(String(255), nullable=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(String(50), index=True)
+    email: Mapped[str] = mapped_column(String(250), unique=True, index=True)
+    password: Mapped[str] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    avatar: Mapped[Optional[str]] = mapped_column(String(255))
+    refresh_token: Mapped[Optional[str]] = mapped_column(String(255))
+    confirmed: Mapped[bool] = mapped_column(default=False)
 
 
 class Contact(Base):
@@ -26,13 +30,13 @@ class Contact(Base):
         UniqueConstraint('email', 'user_id', name='unique_contact_user'),
     )
 
-    id = Column(Integer, primary_key=True)
-    first_name = Column(String(100), nullable=False, index=True)
-    last_name = Column(String(100), nullable=False, index=True)
-    email = Column(String(100), nullable=False, unique=False, index=True)
-    phone_number = Column(String(20), nullable=False)
-    birth_date = Column(Date, nullable=False)
-    additional_data = Column(String(500))
-    user_id = Column(ForeignKey(User.id, ondelete="CASCADE"), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    first_name: Mapped[str] = mapped_column(String(100), index=True)
+    last_name: Mapped[str] = mapped_column(String(100), index=True)
+    email: Mapped[str] = mapped_column(String(100), index=True)
+    phone_number: Mapped[str] = mapped_column(String(20))
+    birth_date: Mapped[str] = mapped_column(Date)
+    additional_data: Mapped[Optional[str]] = mapped_column(String(500))
+    user_id: Mapped[str] = mapped_column(ForeignKey(User.id, ondelete="CASCADE"))
 
-    user = relationship(User, backref="contacts")
+    user: Mapped[User] = relationship(backref="contacts")

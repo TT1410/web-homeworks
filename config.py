@@ -1,15 +1,48 @@
+from dataclasses import dataclass
 from pathlib import Path
+from ipaddress import ip_address
 
-from pydantic import BaseSettings
-
+from pydantic import BaseSettings, EmailStr
+from fastapi.templating import Jinja2Templates
 
 BASE_DIR = Path(__file__).parent
 
+BANNED_IPS = [
+    ip_address("192.168.1.1"), ip_address("192.168.1.2"),
+]
+
+ORIGINS = [
+    "http://localhost:3000",
+]
+
+
+@dataclass(frozen=True)
+class Template:
+    emails: Path = BASE_DIR / 'src' / 'templates' / 'emails'
+    html_response: Jinja2Templates = Jinja2Templates(directory=BASE_DIR / 'src' / 'templates' / 'response')
+
 
 class Settings(BaseSettings):
-    DB_URL: str
-    secret_key: str
+    db_url: str
+
+    secret_key_jwt: str
     algorithm: str
+
+    mail_username: EmailStr
+    mail_password: str
+    mail_from: EmailStr
+    mail_port: int
+    mail_server: str
+    mail_from_name: str
+
+    redis_host: str
+    redis_port: int
+    redis_password: str
+
+    cloudinary_name: str
+    cloudinary_api_key: int
+    cloudinary_api_secret: str
+    cloudinary_folder: str = "folder/"
 
     class Config:
         env_file = BASE_DIR / '.env'
