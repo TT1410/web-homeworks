@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "homework-11"
+version = "0.1.0"
+description = "FastAPI"
+authors = ["Taras"]
+readme = "README.md"
+packages = [{include = "homework_11"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.92.0"
+uvicorn = {extras = ["standart"], version = "^0.20.0"}
+sqlalchemy = "^2.0.4"
+alembic = "^1.9.4"
+psycopg2-binary = "^2.9.5"
+pydantic = {extras = ["email"], version = "^1.10.5"}
+faker = "^17.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
