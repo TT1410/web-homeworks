@@ -1,0 +1,6 @@
+[MONGO_DB]
+USER=username
+PASSWORD=password
+DB_NAME=book
+PORT=27017
+HOST=mongodb_host
