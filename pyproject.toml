@@ -1,19 +1,23 @@
 [tool.poetry]
-name = "homework-11"
+name = "homework-12"
 version = "0.1.0"
-description = "FastAPI"
-authors = ["Taras"]
+description = ""
+authors = ["Your Name <you@example.com>"]
 readme = "README.md"
-packages = [{include = "homework_11"}]
+packages = [{include = "homework_12"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+python-multipart = "^0.0.5"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 fastapi = "^0.92.0"
 uvicorn = {extras = ["standart"], version = "^0.20.0"}
 sqlalchemy = "^2.0.4"
-alembic = "^1.9.4"
+libgravatar = "^1.0.3"
 psycopg2-binary = "^2.9.5"
-pydantic = {extras = ["email"], version = "^1.10.5"}
+pydantic = {extras = ["dotenv", "email"], version = "^1.10.5"}
+alembic = "^1.9.4"
 faker = "^17.3.0"
 
 

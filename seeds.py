@@ -19,7 +19,8 @@ def main():
                 email=fake.email(),
                 phone_number=fake.phone_number(),
                 birth_date=fake.date_between(start_date='-55y'),
-                additional_data=fake.job()
+                additional_data=fake.job(),
+                user_id=1
             )
         )
 
