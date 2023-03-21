@@ -13,23 +13,6 @@ from .forms import QuoteForm, TagForm, AuthorForm
 from services.scrape_quotes import scrape_quotes
 
 
-class AuthorUpdateView(UpdateView):
-    model = Author
-    fields = ['fullname', 'born_date', 'born_location', 'description']
-    template_name = 'quote/edit_author.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        return obj if obj.user == self.request.user else Http404()
-
-    def get_success_url(self):
-        return reverse_lazy('quote:author', kwargs={'author': self.object.fullname})
-
-
 class QuoteUpdateView(UpdateView):
     model = Quote
     fields = ['quote', 'author', 'tags']
@@ -137,6 +120,23 @@ class QuoteView(View):
             return render(request, self.template_add, {'form': form})
 
         return redirect('quote:index')
+
+
+class AuthorUpdateView(UpdateView):
+    model = Author
+    fields = ['fullname', 'born_date', 'born_location', 'description']
+    template_name = 'quote/edit_author.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        return obj if obj.user == self.request.user else Http404()
+
+    def get_success_url(self):
+        return reverse_lazy('quote:author', kwargs={'author': self.object.fullname})
 
 
 class AuthorView(View):
