@@ -152,4 +152,6 @@ cython_debug/
 .idea/
 test.py
 database.db
+test.db
+config.ini
 .DS_Store
