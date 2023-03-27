@@ -14,6 +14,12 @@ CODES_MOBILE_UA = ['067', '096', '097', '098',
 
 
 def phone_normalize(value: str) -> str:
+    """
+    The phone_normalize function takes a phone number as a string and returns it in the format +380XXXXXXXXX.
+
+    :param value: str: Specify the type of the value parameter
+    :return: A string
+    """
     clean_phone = (
         value.strip()
         .removeprefix("+")

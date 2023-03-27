@@ -2,10 +2,9 @@ from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import Column, Integer, Date, String, Boolean, func, Table, UniqueConstraint
-from sqlalchemy.orm import relationship, mapped_column, Mapped
+from sqlalchemy.orm import declarative_base, relationship, mapped_column, Mapped
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime
-from sqlalchemy.ext.declarative import declarative_base
 
 
 Base = declarative_base()

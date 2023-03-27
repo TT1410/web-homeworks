@@ -23,10 +23,10 @@ class Template:
 
 
 class Settings(BaseSettings):
-    db_url: str
+    db_url: str = "{DB_TYPE}+{DB_CONNECTOR}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 
-    secret_key_jwt: str
-    algorithm: str
+    secret_key_jwt: str = "secret_key_jwt"
+    algorithm: str = "HS256"
 
     mail_username: EmailStr
     mail_password: str

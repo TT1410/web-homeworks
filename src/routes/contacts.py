@@ -110,7 +110,6 @@ async def read_contacts(skip: int = 0, limit: int = Query(default=10, ge=1, le=1
     :param db: Session: Pass the database connection to the function
     :param current_user: User: Get the user_id from the token
     :return: A list of contacts
-    :doc-author: Trelent
     """
     contact = await repository_contacts.get_contacts(current_user, skip, limit, first_name, last_name, email, db)
 
@@ -128,7 +127,6 @@ async def read_contact(contact_id: int, db: Session = Depends(get_db),
     :param db: Session: Pass the database session to the function
     :param current_user: User: Get the current user from the database
     :return: A contact object
-    :doc-author: Trelent
     """
     contact = await repository_contacts.get_contact_by_id(current_user, contact_id, db)
     if contact is None:
@@ -151,7 +149,6 @@ async def update_contact(body: ContactUpdateModel, contact_id: int, db: Session 
     :param db: Session: Pass the database session to the repository layer
     :param current_user: User: Get the user that is currently logged in
     :return: The updated contact
-    :doc-author: Trelent
     """
     contact = await repository_contacts.update_contact(current_user, contact_id, body, db)
     if contact is None:
